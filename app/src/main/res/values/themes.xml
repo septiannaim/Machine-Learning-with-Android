@@ -1,0 +1,19 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Base.Theme.Asclepius" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/custom_light_primary</item>
+        <item name="colorButtonNormal">@color/custom_button_normal</item>
+    </style>
+
+    <style name="Theme.Asclepius" parent="Base.Theme.Asclepius">
+        <item name="colorPrimary">@color/custom_light_primary</item>
+        <item name="colorPrimaryVariant">@color/custom_light_primary_variant</item>
+        <item name="colorOnPrimary">@color/custom_on_light_primary</item>
+        <item name="colorButtonNormal">@color/custom_button_normal</item>
+        <item name="colorAccent">@color/custom_button_normal</item>
+    </style>
+
+    <color name="custom_light_primary">#4CAF50</color>
+    <color name="custom_light_primary_variant">#388E3C</color>
+    <color name="custom_on_light_primary">#FFFFFF</color>
+    <color name="custom_button_normal">#8BC34A</color>
+</resources>

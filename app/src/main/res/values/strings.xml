@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Asclepius</string>
+    <string name="camera_x">CameraX</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Select photo from Gallery</string>
+    <string name="analyze">Analyze</string>
+    <string name="result">Analysis Result</string>
+    <string name="image_classifier_failed">Failed to initialize image classifier. See error logs for details</string>
+    <string name="image_classification_failed">Failed to initialize image classification. See error logs for details</string>
+    <string name="result_title">Prediction based on the selected image:</string>
+</resources>
