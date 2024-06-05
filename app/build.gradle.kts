@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "com.dicoding.asclepius"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.dicoding.asclepius"
-        minSdk = 24
-        targetSdk = 33
+        minSdk = 23
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -52,7 +52,7 @@ dependencies {
     // TODO: Tambahkan Library TensorFlow Lite
     implementation("org.tensorflow:tensorflow-lite-support:0.4.4")
     implementation("org.tensorflow:tensorflow-lite-metadata:0.4.4")
-    implementation("org.tensorflow:tensorflow-lite-task-vision:0.4.4")
+    implementation ("org.tensorflow:tensorflow-lite-task-vision:0.4.4")
 
     // Library untuk crop foto
     implementation("com.github.yalantis:ucrop:2.2.8")

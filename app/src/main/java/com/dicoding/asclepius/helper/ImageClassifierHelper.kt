@@ -18,12 +18,13 @@ import org.tensorflow.lite.task.core.BaseOptions
 import org.tensorflow.lite.task.vision.classifier.Classifications
 import org.tensorflow.lite.task.vision.classifier.ImageClassifier
 
+
 class ImageClassifierHelper(
     var threshold: Float = 0.1f,
     var maxResults: Int = 3,
-    private val modelName: String = "cancer_classification.tflite",
-    private val context: Context,
-    private val classifierListener: ClassifierListener?
+    val modelName: String = "cancer_classification.tflite",
+    val context: Context,
+    val classifierListener: ClassifierListener?
 ) {
     private var imageClassifier: ImageClassifier? = null
 
@@ -32,15 +33,13 @@ class ImageClassifierHelper(
     }
 
     private fun setupImageClassifier() {
+        // TODO: Menyiapkan Image Classifier untuk memproses gambar.
         val optionsBuilder = ImageClassifier.ImageClassifierOptions.builder()
             .setScoreThreshold(threshold)
             .setMaxResults(maxResults)
-
-        val baseOptions = BaseOptions.builder()
+        val baseOptionsBuilder = BaseOptions.builder()
             .setNumThreads(4)
-            .build()
-
-        optionsBuilder.setBaseOptions(baseOptions)
+        optionsBuilder.setBaseOptions(baseOptionsBuilder.build())
 
         try {
             imageClassifier = ImageClassifier.createFromFileAndOptions(
@@ -50,11 +49,12 @@ class ImageClassifierHelper(
             )
         } catch (e: IllegalStateException) {
             classifierListener?.onError(context.getString(R.string.image_classifier_failed))
-            Log.e(TAG, e.message.toString())
+            Log.e(EXTRA_TAG, e.message.toString())
         }
     }
 
     fun classifyStaticImage(imageUri: Uri) {
+        // TODO: mengklasifikasikan imageUri dari gambar statis.
         if (imageClassifier == null) {
             setupImageClassifier()
         }
@@ -67,13 +67,16 @@ class ImageClassifierHelper(
     }
 
     private fun getImageBitmap(imageUri: Uri): Bitmap {
-        val bitmap = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+        return if (checkVersion()) {
             val source = ImageDecoder.createSource(context.contentResolver, imageUri)
             ImageDecoder.decodeBitmap(source)
         } else {
             MediaStore.Images.Media.getBitmap(context.contentResolver, imageUri)
-        }
-        return bitmap.copy(Bitmap.Config.ARGB_8888, true)
+        }.copy(Bitmap.Config.ARGB_8888, true)
+    }
+
+    private fun checkVersion(): Boolean {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
     }
 
     private fun preprocessImg(bitmap: Bitmap): TensorImage {
@@ -86,10 +89,9 @@ class ImageClassifierHelper(
     }
 
     private fun performInference(tensorImage: TensorImage): List<Classifications>? {
-        val startTime = SystemClock.uptimeMillis()
+        var inferenceTime = SystemClock.uptimeMillis()
         val results = imageClassifier?.classify(tensorImage)
-        val inferenceTime = SystemClock.uptimeMillis() - startTime
-
+        inferenceTime = SystemClock.uptimeMillis() - inferenceTime
         classifierListener?.onResults(results, inferenceTime)
         return results
     }
@@ -100,10 +102,14 @@ class ImageClassifierHelper(
 
     interface ClassifierListener {
         fun onError(error: String)
-        fun onResults(results: List<Classifications>?, inferenceTime: Long)
+        fun onResults(
+            results: List<Classifications>?,
+            inferenceTime: Long
+        )
     }
 
     companion object {
-        private const val TAG = "ImageClassifierHelper"
+        private const val EXTRA_TAG = "ImageClassifierHelper"
     }
+
 }

@@ -4,6 +4,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import com.dicoding.asclepius.databinding.ActivityResultBinding
 import com.dicoding.asclepius.helper.ImageClassifierHelper
 import org.tensorflow.lite.task.vision.classifier.Classifications
@@ -28,7 +29,8 @@ class ResultActivity : AppCompatActivity() {
                 context = this,
                 classifierListener = object : ImageClassifierHelper.ClassifierListener {
                     override fun onError(errorMessage: String) {
-                        Log.d(EXTRA_TAG, "Error: $errorMessage")
+                        // Display error message using Toast
+                        Toast.makeText(this@ResultActivity, "Error: $errorMessage", Toast.LENGTH_SHORT).show()
                     }
 
                     override fun onResults(results: List<Classifications>?, inferenceTime: Long) {
@@ -38,8 +40,9 @@ class ResultActivity : AppCompatActivity() {
             )
             imageClassifierHelper.classifyStaticImage(imageUri)
         } else {
-            Log.e(EXTRA_TAG, "No image URI provided")
-            finish() // Close the activity if no image URI is provided
+            // Display error message using Toast and close the activity
+            Toast.makeText(this, "No image URI provided", Toast.LENGTH_SHORT).show()
+            finish()
         }
     }
 
